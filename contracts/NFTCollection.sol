@@ -1,79 +1,59 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "./ERC721Shufflable.sol";
+import "./ERC721Distributable.sol";
+import "./ERC721Whitelistable.sol";
 
-contract NFTCollection is ERC721Enumerable, Ownable {
+contract NFTCollection is
+    ERC721Distributable,
+    ERC721Shufflable,
+    ERC721Whitelistable,
+    ERC721Burnable
+{
     using Strings for uint256;
 
     string private baseURI;
-    string public baseExtension = ".json";
+    string private baseExtension = ".json";
     uint256 public cost = 10 ether;
-    uint256 public maxSupply = 100;
     uint256 public maxMintAmount = 10;
     bool public paused = true;
-
-    mapping(uint256 => uint256) randomMap;
 
     constructor(
         string memory _name,
         string memory _symbol,
-        string memory _initBaseURI
-    ) ERC721(_name, _symbol) {
+        string memory _initBaseURI,
+        uint256 _maxSupply
+    ) ERC721(_name, _symbol) ERC721BoundedEnumerable(_maxSupply) {
         setBaseURI(_initBaseURI);
+    }
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 amount
+    ) internal override(ERC721, ERC721Enumerable, ERC721Distributable) {
+        super._beforeTokenTransfer(from, to, amount);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721, ERC721Enumerable, ERC721Distributable)
+        returns (bool)
+    {
+        return
+            interfaceId == type(IERC721Enumerable).interfaceId ||
+            super.supportsInterface(interfaceId);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
     }
 
-    // distribute royalties between holders
-    receive() external payable {
-        uint256 supply = totalSupply();
-        uint256 valuePerEach = msg.value / supply;
-
-        for (uint256 i = 0; i < supply; i++) {
-            (bool status, ) = payable(this.ownerOf(this.tokenByIndex(i))).call{
-                value: valuePerEach
-            }("");
-            require(status, "Royalty transfer failed");
-        }
-    }
-
-    // get random NFT item
-    function getRandomItemId(uint256 _index) internal returns (uint256) {
-        uint256 randomHash = random("MINT", _index);
-        uint256 currentSupply = maxSupply - totalSupply();
-        uint256 id = (randomHash % currentSupply) + 1;
-        uint256 itemId = randomMap[id] > 0 ? randomMap[id] : id;
-
-        randomMap[id] = randomMap[currentSupply] > 0
-            ? randomMap[currentSupply]
-            : currentSupply;
-
-        return itemId;
-    }
-
-    // generate pseudo random number
-    function random(string memory _salt, uint256 _index)
-        internal
-        view
-        returns (uint256)
-    {
-        return
-            uint256(
-                keccak256(
-                    abi.encodePacked(
-                        _salt,
-                        _index.toString(),
-                        block.timestamp.toString(),
-                        msg.sender
-                    )
-                )
-            );
-    }
-
-    function mint(uint256 _mintAmount) public payable {
+    modifier onlyMintable(uint256 _mintAmount) {
         uint256 supply = totalSupply();
         require(!paused, "Minting didn't started yet");
         require(_mintAmount > 0, "You must mint at least one");
@@ -83,11 +63,35 @@ contract NFTCollection is ERC721Enumerable, Ownable {
             supply + _mintAmount <= maxSupply,
             "Fewer items left than you trying to mint"
         );
+        _;
+    }
 
+    function freeMint(uint256 _mintAmount)
+        public
+        onlyMintable(_mintAmount)
+        onlyMintableFree(_mintAmount)
+    {
+        // address sender = _msgSender();
+        // require(whiteList[sender] > 0, "You are not in the whitelist");
+        // require(whiteList[sender] >= _mintAmount, "Exceed free mints");
+
+        mintMany(_mintAmount);
+        // whiteList[sender] -= _mintAmount;
+    }
+
+    function mint(uint256 _mintAmount)
+        public
+        payable
+        onlyMintable(_mintAmount)
+    {
         if (msg.sender != owner()) {
             require(msg.value >= cost * _mintAmount);
         }
 
+        mintMany(_mintAmount);
+    }
+
+    function mintMany(uint256 _mintAmount) private {
         for (uint256 i = 1; i <= _mintAmount; i++) {
             _safeMint(msg.sender, getRandomItemId(i));
         }
@@ -135,6 +139,10 @@ contract NFTCollection is ERC721Enumerable, Ownable {
         paused = false;
     }
 
+    function pause() public onlyOwner {
+        paused = true;
+    }
+
     function setCost(uint256 _newCost) public onlyOwner {
         cost = _newCost;
     }
@@ -155,7 +163,9 @@ contract NFTCollection is ERC721Enumerable, Ownable {
     }
 
     function withdraw() public payable onlyOwner {
-        (bool status, ) = payable(owner()).call{value: address(this).balance}("");
+        (bool status, ) = payable(owner()).call{value: address(this).balance}(
+            ""
+        );
         require(status);
     }
 }

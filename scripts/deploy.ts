@@ -1,4 +1,4 @@
-const { NFT_NAME, NFT_SYMBOL, NFT_BASE_URI } = process.env;
+const { NFT_NAME, NFT_SYMBOL, NFT_BASE_URI, NFT_MAX_SUPPLY } = process.env;
 import { ethers } from "hardhat";
 
 async function main() {
@@ -12,7 +12,12 @@ async function main() {
   );
 
   const Contract = await ethers.getContractFactory("NFTCollection");
-  const contract = await Contract.deploy(NFT_NAME, NFT_SYMBOL, NFT_BASE_URI);
+  const contract = await Contract.deploy(
+    NFT_NAME,
+    NFT_SYMBOL,
+    NFT_BASE_URI,
+    NFT_MAX_SUPPLY
+  );
 
   console.log("Contract address:", contract.address);
 }

@@ -12,7 +12,6 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
@@ -25,48 +24,29 @@ import type {
   OnEvent,
 } from "./common";
 
-export interface NFTCollectionInterface extends ethers.utils.Interface {
+export interface ERC721WhitelistableInterface extends ethers.utils.Interface {
   functions: {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "burn(uint256)": FunctionFragment;
-    "cost()": FunctionFragment;
-    "freeMint(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
-    "maxMintAmount()": FunctionFragment;
     "maxSupply()": FunctionFragment;
-    "mint(uint256)": FunctionFragment;
     "name()": FunctionFragment;
-    "noRoyalties(address)": FunctionFragment;
-    "noRoyaltiesArray(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
-    "ownerByIndex(uint256)": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
-    "pause()": FunctionFragment;
-    "paused()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
-    "setBaseExtension(string)": FunctionFragment;
-    "setBaseURI(string)": FunctionFragment;
-    "setCost(uint256)": FunctionFragment;
-    "setMaxMintAmount(uint256)": FunctionFragment;
-    "setNoRoyalties(address[])": FunctionFragment;
     "setWhitelist(address[],uint256[])": FunctionFragment;
-    "start()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenByIndex(uint256)": FunctionFragment;
     "tokenOfOwnerByIndex(address,uint256)": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
-    "totalOwners()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "walletOfOwner(address)": FunctionFragment;
     "whitelist(address)": FunctionFragment;
-    "withdraw()": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -74,12 +54,6 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(functionFragment: "burn", values: [BigNumberish]): string;
-  encodeFunctionData(functionFragment: "cost", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "freeMint",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [BigNumberish]
@@ -88,29 +62,13 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     functionFragment: "isApprovedForAll",
     values: [string, string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "maxMintAmount",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "maxSupply", values?: undefined): string;
-  encodeFunctionData(functionFragment: "mint", values: [BigNumberish]): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "noRoyalties", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "noRoyaltiesArray",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "ownerByIndex",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
-  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
@@ -124,27 +82,9 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     values: [string, boolean]
   ): string;
   encodeFunctionData(
-    functionFragment: "setBaseExtension",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "setBaseURI", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "setCost",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setMaxMintAmount",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setNoRoyalties",
-    values: [string[]]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setWhitelist",
     values: [string[], BigNumberish[]]
   ): string;
-  encodeFunctionData(functionFragment: "start", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
@@ -163,10 +103,6 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "totalOwners",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
   ): string;
@@ -178,18 +114,10 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "walletOfOwner",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "whitelist", values: [string]): string;
-  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "cost", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "freeMint", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
     data: BytesLike
@@ -198,29 +126,10 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "maxMintAmount",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "maxSupply", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "noRoyalties",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "noRoyaltiesArray",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "ownerByIndex",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
@@ -234,24 +143,9 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBaseExtension",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setBaseURI", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "setCost", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setMaxMintAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setNoRoyalties",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "setWhitelist",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "start", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -267,10 +161,6 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tokenURI", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "totalOwners",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
   ): Result;
@@ -282,12 +172,7 @@ export interface NFTCollectionInterface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "walletOfOwner",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -331,12 +216,12 @@ export type TransferEvent = TypedEvent<
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
-export interface NFTCollection extends BaseContract {
+export interface ERC721Whitelistable extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: NFTCollectionInterface;
+  interface: ERC721WhitelistableInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -366,18 +251,6 @@ export interface NFTCollection extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    burn(
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    cost(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    freeMint(
-      _mintAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     getApproved(
       tokenId: BigNumberish,
       overrides?: CallOverrides
@@ -389,41 +262,16 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    maxMintAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     maxSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    mint(
-      _mintAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
-    noRoyalties(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
-
-    noRoyaltiesArray(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
     owner(overrides?: CallOverrides): Promise<[string]>;
-
-    ownerByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
 
     ownerOf(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -450,38 +298,9 @@ export interface NFTCollection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setBaseExtension(
-      _newBaseExtension: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setBaseURI(
-      _newBaseURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setCost(
-      _newCost: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setMaxMintAmount(
-      _newmaxMintAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setNoRoyalties(
-      _list: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     setWhitelist(
       _addresses: string[],
       _balances: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    start(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -508,8 +327,6 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    totalOwners(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transferFrom(
@@ -524,16 +341,7 @@ export interface NFTCollection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    walletOfOwner(
-      _owner: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]]>;
-
     whitelist(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    withdraw(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
   };
 
   approve(
@@ -543,18 +351,6 @@ export interface NFTCollection extends BaseContract {
   ): Promise<ContractTransaction>;
 
   balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  burn(
-    tokenId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  cost(overrides?: CallOverrides): Promise<BigNumber>;
-
-  freeMint(
-    _mintAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   getApproved(
     tokenId: BigNumberish,
@@ -567,35 +363,13 @@ export interface NFTCollection extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  maxMintAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
   maxSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-  mint(
-    _mintAmount: BigNumberish,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
-  noRoyalties(arg0: string, overrides?: CallOverrides): Promise<boolean>;
-
-  noRoyaltiesArray(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
   owner(overrides?: CallOverrides): Promise<string>;
 
-  ownerByIndex(index: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  pause(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  paused(overrides?: CallOverrides): Promise<boolean>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -622,38 +396,9 @@ export interface NFTCollection extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setBaseExtension(
-    _newBaseExtension: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setBaseURI(
-    _newBaseURI: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setCost(
-    _newCost: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setMaxMintAmount(
-    _newmaxMintAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setNoRoyalties(
-    _list: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   setWhitelist(
     _addresses: string[],
     _balances: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  start(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -677,8 +422,6 @@ export interface NFTCollection extends BaseContract {
 
   tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  totalOwners(overrides?: CallOverrides): Promise<BigNumber>;
-
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transferFrom(
@@ -693,16 +436,7 @@ export interface NFTCollection extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  walletOfOwner(
-    _owner: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
-
   whitelist(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  withdraw(
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   callStatic: {
     approve(
@@ -712,15 +446,6 @@ export interface NFTCollection extends BaseContract {
     ): Promise<void>;
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    burn(tokenId: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    cost(overrides?: CallOverrides): Promise<BigNumber>;
-
-    freeMint(
-      _mintAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     getApproved(
       tokenId: BigNumberish,
@@ -733,33 +458,13 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    maxMintAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
     maxSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    mint(_mintAmount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
-    noRoyalties(arg0: string, overrides?: CallOverrides): Promise<boolean>;
-
-    noRoyaltiesArray(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
     owner(overrides?: CallOverrides): Promise<string>;
 
-    ownerByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    pause(overrides?: CallOverrides): Promise<void>;
-
-    paused(overrides?: CallOverrides): Promise<boolean>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -784,29 +489,11 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setBaseExtension(
-      _newBaseExtension: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setBaseURI(_newBaseURI: string, overrides?: CallOverrides): Promise<void>;
-
-    setCost(_newCost: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    setMaxMintAmount(
-      _newmaxMintAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setNoRoyalties(_list: string[], overrides?: CallOverrides): Promise<void>;
-
     setWhitelist(
       _addresses: string[],
       _balances: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
-
-    start(overrides?: CallOverrides): Promise<void>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -828,8 +515,6 @@ export interface NFTCollection extends BaseContract {
 
     tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-    totalOwners(overrides?: CallOverrides): Promise<BigNumber>;
-
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferFrom(
@@ -844,14 +529,7 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    walletOfOwner(
-      _owner: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
     whitelist(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    withdraw(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -907,18 +585,6 @@ export interface NFTCollection extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    burn(
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    cost(overrides?: CallOverrides): Promise<BigNumber>;
-
-    freeMint(
-      _mintAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     getApproved(
       tokenId: BigNumberish,
       overrides?: CallOverrides
@@ -930,41 +596,16 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    maxMintAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
     maxSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    mint(
-      _mintAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
-    noRoyalties(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    noRoyaltiesArray(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    ownerByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     ownerOf(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -991,38 +632,9 @@ export interface NFTCollection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setBaseExtension(
-      _newBaseExtension: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setBaseURI(
-      _newBaseURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setCost(
-      _newCost: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setMaxMintAmount(
-      _newmaxMintAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setNoRoyalties(
-      _list: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     setWhitelist(
       _addresses: string[],
       _balances: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    start(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1049,8 +661,6 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    totalOwners(overrides?: CallOverrides): Promise<BigNumber>;
-
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferFrom(
@@ -1065,16 +675,7 @@ export interface NFTCollection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    walletOfOwner(
-      _owner: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     whitelist(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    withdraw(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1089,18 +690,6 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    burn(
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    cost(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    freeMint(
-      _mintAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     getApproved(
       tokenId: BigNumberish,
       overrides?: CallOverrides
@@ -1112,44 +701,16 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    maxMintAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     maxSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    mint(
-      _mintAmount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    noRoyalties(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    noRoyaltiesArray(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    ownerByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     ownerOf(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1176,38 +737,9 @@ export interface NFTCollection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    setBaseExtension(
-      _newBaseExtension: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setBaseURI(
-      _newBaseURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setCost(
-      _newCost: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setMaxMintAmount(
-      _newmaxMintAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setNoRoyalties(
-      _list: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     setWhitelist(
       _addresses: string[],
       _balances: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    start(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1234,8 +766,6 @@ export interface NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    totalOwners(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferFrom(
@@ -1250,18 +780,9 @@ export interface NFTCollection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    walletOfOwner(
-      _owner: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     whitelist(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    withdraw(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -21,6 +21,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC721__factory>;
     getContractFactory(
+      name: "ERC721Burnable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721Burnable__factory>;
+    getContractFactory(
       name: "ERC721Enumerable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC721Enumerable__factory>;
@@ -49,6 +53,26 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
+      name: "ERC721BoundedEnumerable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721BoundedEnumerable__factory>;
+    getContractFactory(
+      name: "ERC721Distributable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721Distributable__factory>;
+    getContractFactory(
+      name: "ERC721EnumerableOwners",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721EnumerableOwners__factory>;
+    getContractFactory(
+      name: "ERC721Shufflable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721Shufflable__factory>;
+    getContractFactory(
+      name: "ERC721Whitelistable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721Whitelistable__factory>;
+    getContractFactory(
       name: "NFTCollection",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.NFTCollection__factory>;
@@ -63,6 +87,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ERC721>;
+    getContractAt(
+      name: "ERC721Burnable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721Burnable>;
     getContractAt(
       name: "ERC721Enumerable",
       address: string,
@@ -98,6 +127,31 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
+    getContractAt(
+      name: "ERC721BoundedEnumerable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721BoundedEnumerable>;
+    getContractAt(
+      name: "ERC721Distributable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721Distributable>;
+    getContractAt(
+      name: "ERC721EnumerableOwners",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721EnumerableOwners>;
+    getContractAt(
+      name: "ERC721Shufflable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721Shufflable>;
+    getContractAt(
+      name: "ERC721Whitelistable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721Whitelistable>;
     getContractAt(
       name: "NFTCollection",
       address: string,

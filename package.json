@@ -5,7 +5,7 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
-    "format:sol": "prettier --write 'src/contracts/**/*.sol'",
+    "format:sol": "prettier --write './contracts/**/*.sol'",
     "format:ts": "prettier --write './**/*.ts'",
     "deploy:testnet": "npx hardhat run scripts/deploy.ts --network testnet",
     "deploy:mainnet": "npx hardhat run scripts/deploy.ts --network mainnet"
