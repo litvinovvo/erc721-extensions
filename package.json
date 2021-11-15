@@ -1,0 +1,48 @@
+{
+  "name": "nft-template",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "format:sol": "prettier --write 'src/contracts/**/*.sol'",
+    "format:ts": "prettier --write './**/*.ts'",
+    "deploy:testnet": "npx hardhat run scripts/deploy.ts --network testnet",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.ts --network mainnet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/litvinovvo/nft-template.git"
+  },
+  "keywords": [
+    "nft"
+  ],
+  "author": "litvinovvo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/litvinovvo/nft-template/issues"
+  },
+  "homepage": "https://github.com/litvinovvo/nft-template#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.3",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@typechain/ethers-v5": "^8.0.2",
+    "@typechain/hardhat": "^3.0.0",
+    "@types/chai": "^4.2.22",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.11.7",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.5.1",
+    "hardhat": "^2.6.8",
+    "prettier": "^2.4.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.19",
+    "ts-node": "^10.4.0",
+    "typechain": "^6.0.2",
+    "typescript": "^4.4.4"
+  }
+}
