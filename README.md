@@ -1,13 +1,15 @@
 # What is the repository?
-This is repository with experimental NFT contract template based on HardHat.
+This is repository with experimental ERC721 composable extensions.
 
-Contract features:
-1. Mint process randomization
-2. Enumerate owners
-3. Royalty distribution between owners, ignore list for marketplaces
-4. Whitelist for free mints
+Available contracts/extensions:
+1. ERC721BoundedEnumerable: OpenZeppelin Enumerable extension with limited supply
+2. ERC721EnumerableOwners: Maintain unique owners list
+3. ERC721Distributable: Royalty distribution between owners, you could set ignore list for marketplaces
+4. ERC721Shufflable: Mint pseudo randomization
+5. ERC721Whitelistable: Whitelist for free mints
+6. Exmple contract that combines all of the extensions 
 
-**Contracts never been audited, use it on your own risk**
+**Code never been audited, use it on your own risk**
 
 # Setup
 1. Run npm i
