@@ -7,7 +7,7 @@ Available contracts/extensions:
 3. ERC721Distributable: Royalty distribution between owners, you could set ignore list for marketplaces
 4. ERC721Shufflable: Mint pseudo randomization
 5. ERC721Whitelistable: Whitelist for free mints
-6. Exmple contract that combines all of the extensions 
+6. NFTCollection: Example contract that combines all of the extensions 
 
 **Code never been audited, use it on your own risk**
 
