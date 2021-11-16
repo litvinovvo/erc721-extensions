@@ -71,12 +71,7 @@ contract NFTCollection is
         onlyMintable(_mintAmount)
         onlyMintableFree(_mintAmount)
     {
-        // address sender = _msgSender();
-        // require(whiteList[sender] > 0, "You are not in the whitelist");
-        // require(whiteList[sender] >= _mintAmount, "Exceed free mints");
-
         mintMany(_mintAmount);
-        // whiteList[sender] -= _mintAmount;
     }
 
     function mint(uint256 _mintAmount)

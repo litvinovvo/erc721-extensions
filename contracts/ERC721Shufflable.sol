@@ -8,12 +8,6 @@ abstract contract ERC721Shufflable is ERC721BoundedEnumerable {
     using Strings for uint256;
     mapping(uint256 => uint256) randomMap;
 
-    // uint public maxSupply;
-
-    // constructor (uint _maxSupply) {
-    //     maxSupply = _maxSupply;
-    // }
-
     // get random NFT item
     function getRandomItemId(uint256 _index) internal returns (uint256) {
         uint256 randomHash = random("MINT", _index);
